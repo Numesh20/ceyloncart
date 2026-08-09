@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CeylonCart — Authentic Sri Lankan Goods</title>
+  <meta name="description" content="Shop premium authentic Sri Lankan products — Ceylon Tea, Spices, Handcrafts, Batik and more. CeylonCart brings Sri Lanka to your door." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+
+  <!-- ========== NAVBAR ========== -->
+  <header class="navbar" id="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <span class="logo-icon">🦁</span>
+        <span class="logo-text">Ceylon<span class="logo-accent">Cart</span></span>
+      </div>
+      <nav class="nav-links" id="navLinks">
+        <a href="#home" class="nav-link active">Home</a>
+        <a href="#categories" class="nav-link">Categories</a>
+        <a href="#products" class="nav-link">Products</a>
+        <a href="#about" class="nav-link">About</a>
+      </nav>
+      <div class="nav-actions">
+        <div class="search-wrapper">
+          <input type="text" id="searchInput" class="search-input" placeholder="Search Sri Lankan goods..." />
+          <i class="fa-solid fa-search search-icon"></i>
+        </div>
+        <button class="cart-btn" id="cartBtn" aria-label="Open cart">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="cart-badge" id="cartBadge">0</span>
+        </button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========== HERO ========== -->
+  <section id="home" class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <span class="hero-badge">🇱🇰 Proudly Sri Lankan</span>
+      <h1 class="hero-title">
+        Authentic Flavors.<br />
+        <span class="hero-title-accent">Timeless Crafts.</span>
+      </h1>
+      <p class="hero-subtitle">
+        Discover the finest Ceylon tea, exotic spices, handwoven batik, and artisan crafts — directly from the heart of Sri Lanka, delivered to your door.
+      </p>
+      <div class="hero-cta">
+        <button class="btn-primary" id="shopNowBtn">
+          <i class="fa-solid fa-store"></i> Shop Now
+        </button>
+        <button class="btn-outline">
+          <i class="fa-solid fa-play-circle"></i> Our Story
+        </button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num">500+</span><span class="stat-label">Products</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num">50+</span><span class="stat-label">Artisans</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num">25k+</span><span class="stat-label">Happy Customers</span></div>
+      </div>
+    </div>
+    <div class="hero-image-wrap">
+      <div class="hero-glow"></div>
+      <img src="/hero.png" alt="Sri Lankan authentic products" class="hero-img" />
+    </div>
+  </section>
+
+  <!-- ========== CATEGORIES ========== -->
+  <section id="categories" class="section categories-section">
+    <div class="section-header">
+      <span class="section-tag">Explore</span>
+      <h2 class="section-title">Shop by Category</h2>
+      <p class="section-subtitle">From ancient spice routes to modern artisan workshops</p>
+    </div>
+    <div class="categories-grid" id="categoriesGrid">
+      <!-- Populated by JS -->
+    </div>
+  </section>
+
+  <!-- ========== PRODUCTS ========== -->
+  <section id="products" class="section products-section">
+    <div class="section-header">
+      <span class="section-tag">Featured</span>
+      <h2 class="section-title">Our Collections</h2>
+      <p class="section-subtitle">Handpicked authentic Sri Lankan products</p>
+    </div>
+    <div class="products-grid" id="productsGrid">
+      <!-- Populated by JS -->
+    </div>
+  </section>
+
+  <!-- ========== ABOUT ========== -->
+  <section id="about" class="section about-section">
+    <div class="about-content">
+      <div class="about-text">
+        <span class="section-tag">Our Story</span>
+        <h2 class="section-title">Crafted with Heart,<br/>Shipped with Pride</h2>
+        <p class="about-desc">CeylonCart was founded to bring the world the timeless authenticity of Sri Lanka's finest goods. From highland tea gardens to the coastal craft villages, every product tells a story of passion, tradition and craftsmanship.</p>
+        <div class="about-features">
+          <div class="about-feature"><i class="fa-solid fa-leaf"></i><span>100% Authentic & Natural</span></div>
+          <div class="about-feature"><i class="fa-solid fa-handshake"></i><span>Direct from Artisans</span></div>
+          <div class="about-feature"><i class="fa-solid fa-truck-fast"></i><span>Island-wide Delivery</span></div>
+          <div class="about-feature"><i class="fa-solid fa-shield-halved"></i><span>Quality Guaranteed</span></div>
+        </div>
+      </div>
+      <div class="about-image-wrap">
+        <div class="about-glow"></div>
+        <img src="/hero.png" alt="Sri Lankan artisans at work" class="about-img" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CART SIDEBAR ========== -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <aside class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <h2 class="cart-title"><i class="fa-solid fa-bag-shopping"></i> Your Cart</h2>
+      <button class="cart-close" id="cartClose"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <!-- Populated by JS -->
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total-row">
+        <span>Subtotal</span>
+        <span id="cartTotal">LKR 0.00</span>
+      </div>
+      <p class="cart-note"><i class="fa-solid fa-info-circle"></i> Shipping calculated at checkout</p>
+      <button class="btn-primary checkout-btn" id="checkoutBtn">
+        <i class="fa-solid fa-lock"></i> Secure Checkout
+      </button>
+    </div>
+  </aside>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="logo">
+          <span class="logo-icon">🦁</span>
+          <span class="logo-text">Ceylon<span class="logo-accent">Cart</span></span>
+        </div>
+        <p class="footer-tagline">Authentic flavors and timeless crafts from the Pearl of the Indian Ocean.</p>
+        <div class="footer-socials">
+          <a href="#" class="social-link" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="social-link" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="social-link" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        </div>
+      </div>
+      <div class="footer-links-group">
+        <h4 class="footer-heading">Quick Links</h4>
+        <a href="#home" class="footer-link">Home</a>
+        <a href="#categories" class="footer-link">Categories</a>
+        <a href="#products" class="footer-link">Products</a>
+        <a href="#about" class="footer-link">About Us</a>
+      </div>
+      <div class="footer-links-group">
+        <h4 class="footer-heading">Customer Care</h4>
+        <a href="#" class="footer-link">Track Order</a>
+        <a href="#" class="footer-link">Returns Policy</a>
+        <a href="#" class="footer-link">FAQs</a>
+        <a href="#" class="footer-link">Contact Us</a>
+      </div>
+      <div class="footer-newsletter">
+        <h4 class="footer-heading">Newsletter</h4>
+        <p class="footer-newsletter-text">Subscribe for exclusive deals, new arrivals and Sri Lankan stories.</p>
+        <div class="newsletter-form">
+          <input type="email" placeholder="Your email address" class="newsletter-input" id="newsletterInput" />
+          <button class="newsletter-btn" id="newsletterBtn"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 CeylonCart. All rights reserved. Made with ❤️ in Sri Lanka.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
