@@ -73,11 +73,12 @@ function setupCartListeners() {
   if (cartClose)  cartClose.addEventListener('click', closeCart);
   if (cartOverlay) cartOverlay.addEventListener('click', closeCart);
 
-  // Checkout button (for now, just shows a success message)
+  // Checkout button → navigate to checkout page
   const checkoutBtn = document.getElementById('checkoutBtn');
   if (checkoutBtn) {
     checkoutBtn.addEventListener('click', () => {
-      showToast('🎉 Thank you! Your order has been placed.');
+      window.location.href = '/checkout.html';
+
       closeCart();
     });
   }
