@@ -1227,6 +1227,28 @@ button {
 
   .nav-links { display: none; }
 
+  /* Mobile menu open state (toggled by JS — Bug 7 fix) */
+  .nav-links.open {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border-light);
+    padding: 1rem 1.5rem 1.5rem;
+    gap: 0.25rem;
+    z-index: 999;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    animation: slideDown 0.25s var(--ease);
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
   .search-wrapper { display: none; }
 
   .mobile-menu-btn { display: flex; }

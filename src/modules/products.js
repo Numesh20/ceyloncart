@@ -18,10 +18,6 @@ import { products, categories } from '../data/products.js';
 let activeCategory = 'all';
 let searchQuery = '';
 
-// ---- DOM References ----
-const productsGrid = document.getElementById('productsGrid');
-const categoriesGrid = document.getElementById('categoriesGrid');
-
 // ---- Star Rating Helper ----
 function renderStars(rating) {
   // Create 5 star icons; full stars are solid gold, empty ones are outlined
@@ -40,6 +36,7 @@ function renderStars(rating) {
 
 // ---- Render Category Cards ----
 export function renderCategories() {
+  const categoriesGrid = document.getElementById('categoriesGrid');
   if (!categoriesGrid) return;
 
   categoriesGrid.innerHTML = categories.map(cat => {
@@ -77,6 +74,7 @@ export function renderCategories() {
 
 // ---- Render Product Cards ----
 export function renderProducts() {
+  const productsGrid = document.getElementById('productsGrid');
   if (!productsGrid) return;
 
   // STEP 1: Filter by category

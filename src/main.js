@@ -31,6 +31,7 @@ import {
   initSmoothScroll,
   initActiveNavHighlight,
   showToast,
+  showToastError,
 } from './modules/ui.js';
 
 // ---- App Initialization ----
@@ -59,6 +60,7 @@ function initApp() {
   setupAddToCartListeners();
   setupNewsletterListener();
   setupShopNowBtn();
+  setupMobileMenu(); // Bug 7 fix: wire up mobile hamburger menu
 }
 
 // ---- Cart Event Listeners ----
@@ -172,44 +174,32 @@ function setupShopNowBtn() {
   }
 }
 
-// ---- Error Toast ----
-function showToastError(message) {
-  const existing = document.querySelector('.toast');
-  if (existing) existing.remove();
+// ---- Mobile Menu Toggle (Bug 7 fix) ----
+function setupMobileMenu() {
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const navLinks      = document.getElementById('navLinks');
+  if (!mobileMenuBtn || !navLinks) return;
 
-  const toast = document.createElement('div');
-  toast.className = 'toast';
-  toast.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> ${message}`;
-
-  Object.assign(toast.style, {
-    position: 'fixed',
-    bottom: '2rem',
-    left: '50%',
-    transform: 'translateX(-50%) translateY(20px)',
-    background: '#ef4444',
-    color: 'white',
-    padding: '0.75rem 1.5rem',
-    borderRadius: '999px',
-    fontFamily: 'Inter, sans-serif',
-    fontSize: '0.875rem',
-    fontWeight: '600',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.5rem',
-    zIndex: '9999',
-    opacity: '0',
-    transition: 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
+  mobileMenuBtn.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    // Swap icon between bars (closed) and X (open)
+    const icon = mobileMenuBtn.querySelector('i');
+    if (icon) {
+      icon.className = isOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+    }
+    mobileMenuBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
   });
 
-  document.body.appendChild(toast);
-  requestAnimationFrame(() => {
-    toast.style.opacity = '1';
-    toast.style.transform = 'translateX(-50%) translateY(0)';
+  // Close menu when a nav link is clicked
+  navLinks.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      const icon = mobileMenuBtn.querySelector('i');
+      if (icon) icon.className = 'fa-solid fa-bars';
+      mobileMenuBtn.setAttribute('aria-expanded', 'false');
+    });
   });
-
-  setTimeout(() => {
-    toast.style.opacity = '0';
-    toast.style.transform = 'translateX(-50%) translateY(20px)';
-    setTimeout(() => toast.remove(), 350);
-  }, 2500);
 }
+
+// NOTE: showToastError has been moved to ui.js and is now imported from there.
+// This keeps all toast/UI helpers in a single place (Bug 2 fix).

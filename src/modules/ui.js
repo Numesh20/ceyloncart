@@ -19,28 +19,36 @@ import {
   removeFromCart,
 } from './cart.js';
 
-// ---- DOM References ----
-const cartSidebar  = document.getElementById('cartSidebar');
-const cartOverlay  = document.getElementById('cartOverlay');
-const cartBadge    = document.getElementById('cartBadge');
-const cartTotal    = document.getElementById('cartTotal');
-const cartItemsEl  = document.getElementById('cartItems');
-const navbar       = document.getElementById('navbar');
+// ---- DOM References (resolved lazily inside functions for safety) ----
+function getCartSidebar()  { return document.getElementById('cartSidebar'); }
+function getCartOverlay()  { return document.getElementById('cartOverlay'); }
+function getCartBadge()    { return document.getElementById('cartBadge'); }
+function getCartTotalEl()  { return document.getElementById('cartTotal'); }
+function getCartItemsEl()  { return document.getElementById('cartItems'); }
+function getNavbar()       { return document.getElementById('navbar'); }
 
 // ---- Cart Sidebar Toggle ----
 export function openCart() {
+  const cartSidebar = getCartSidebar();
+  const cartOverlay = getCartOverlay();
+  if (!cartSidebar || !cartOverlay) return;
   cartSidebar.classList.add('open');
   cartOverlay.classList.add('active');
   document.body.style.overflow = 'hidden'; // prevent background scroll
 }
 
 export function closeCart() {
+  const cartSidebar = getCartSidebar();
+  const cartOverlay = getCartOverlay();
+  if (!cartSidebar || !cartOverlay) return;
   cartSidebar.classList.remove('open');
   cartOverlay.classList.remove('active');
   document.body.style.overflow = '';
 }
 
 export function toggleCart() {
+  const cartSidebar = getCartSidebar();
+  if (!cartSidebar) return;
   if (cartSidebar.classList.contains('open')) {
     closeCart();
   } else {
@@ -51,15 +59,20 @@ export function toggleCart() {
 
 // ---- Render Cart Items in Sidebar ----
 export function renderCartUI() {
+  const cartBadge   = getCartBadge();
+  const cartTotalEl = getCartTotalEl();
+  const cartItemsEl = getCartItemsEl();
+  if (!cartBadge || !cartTotalEl || !cartItemsEl) return;
+
   const items = getCart();
 
   // Update badge
   const count = getCartCount();
   cartBadge.textContent = count;
 
-  // Update total
+  // Update total — fix: use toLocaleString with fractionDigits instead of hardcoded '.00'
   const total = getCartTotal();
-  cartTotal.textContent = `LKR ${total.toLocaleString()}.00`;
+  cartTotalEl.textContent = `LKR ${total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
   // Render items or empty state
   if (items.length === 0) {
@@ -72,12 +85,12 @@ export function renderCartUI() {
     return;
   }
 
-  cartItemsEl.innerHTML = items.map(item => `
-    <div class="cart-item" data-id="${item.id}">
+  cartItemsEl.innerHTML = items.map(item =>
+    `<div class="cart-item" data-id="${item.id}">
       <img src="${item.image}" alt="${item.name}" class="cart-item-img" />
       <div class="cart-item-details">
         <p class="cart-item-name">${item.name}</p>
-        <p class="cart-item-price">LKR ${(item.price * item.quantity).toLocaleString()}.00</p>
+        <p class="cart-item-price">LKR ${(item.price * item.quantity).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
         <div class="cart-item-qty">
           <button class="qty-btn" data-action="decrease" data-id="${item.id}">−</button>
           <span class="qty-value">${item.quantity}</span>
@@ -87,8 +100,8 @@ export function renderCartUI() {
       <button class="cart-remove-btn" data-id="${item.id}" aria-label="Remove ${item.name}">
         <i class="fa-solid fa-trash-can"></i>
       </button>
-    </div>
-  `).join('');
+    </div>`
+  ).join('');
 
   // Attach event listeners to qty buttons and remove buttons
   cartItemsEl.querySelectorAll('.qty-btn').forEach(btn => {
@@ -111,6 +124,8 @@ export function renderCartUI() {
 
 // ---- Navbar Scroll Effect ----
 export function initNavbarScroll() {
+  const navbar = getNavbar();
+  if (!navbar) return;
   window.addEventListener('scroll', () => {
     if (window.scrollY > 60) {
       navbar.classList.add('scrolled');
@@ -192,6 +207,49 @@ export function showToast(message) {
   });
 
   // Auto-dismiss after 2.5 seconds
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(-50%) translateY(20px)';
+    setTimeout(() => toast.remove(), 350);
+  }, 2500);
+}
+
+// ---- Show an error toast notification (Bug 2 fix: moved here from main.js) ----
+export function showToastError(message) {
+  const existing = document.querySelector('.toast');
+  if (existing) existing.remove();
+
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> ${message}`;
+
+  Object.assign(toast.style, {
+    position: 'fixed',
+    bottom: '2rem',
+    left: '50%',
+    transform: 'translateX(-50%) translateY(20px)',
+    background: '#ef4444',
+    color: 'white',
+    padding: '0.75rem 1.5rem',
+    borderRadius: '999px',
+    fontFamily: 'Inter, sans-serif',
+    fontSize: '0.875rem',
+    fontWeight: '600',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.5rem',
+    zIndex: '9999',
+    opacity: '0',
+    transition: 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
+    boxShadow: '0 8px 24px rgba(239, 68, 68, 0.3)',
+  });
+
+  document.body.appendChild(toast);
+  requestAnimationFrame(() => {
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateX(-50%) translateY(0)';
+  });
+
   setTimeout(() => {
     toast.style.opacity = '0';
     toast.style.transform = 'translateX(-50%) translateY(20px)';
