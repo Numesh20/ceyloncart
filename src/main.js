@@ -33,6 +33,7 @@ import {
   showToast,
   showToastError,
 } from './modules/ui.js';
+import { initModal, openModal, restoreWishlistIcons } from './modules/modal.js';
 
 // ---- App Initialization ----
 // This runs when the HTML page has fully loaded
@@ -60,7 +61,15 @@ function initApp() {
   setupAddToCartListeners();
   setupNewsletterListener();
   setupShopNowBtn();
-  setupMobileMenu(); // Bug 7 fix: wire up mobile hamburger menu
+  setupMobileMenu();
+
+  // 5. Init product detail modal
+  initModal((product) => {
+    addToCart(product);
+    renderCartUI();
+    showToast(`${product.name} added to cart!`);
+  });
+  setupProductCardListeners();
 }
 
 // ---- Cart Event Listeners ----
@@ -204,3 +213,50 @@ function setupMobileMenu() {
 
 // NOTE: showToastError has been moved to ui.js and is now imported from there.
 // This keeps all toast/UI helpers in a single place (Bug 2 fix).
+
+// ---- Product Card Click → Open Modal ----
+// Clicking anywhere on the card (except Add to Cart / wishlist btn) opens the modal.
+export function setupProductCardListeners() {
+  const grid = document.getElementById('productsGrid');
+  if (!grid) return;
+
+  // Open modal on card click (excluding action buttons)
+  grid.addEventListener('click', (e) => {
+    if (e.target.closest('.add-to-cart-btn') || e.target.closest('.product-wishlist')) return;
+    const card = e.target.closest('.product-card');
+    if (!card) return;
+    const productId = parseInt(card.dataset.id);
+    if (productId) openModal(productId);
+  });
+
+  // Wishlist button on product cards
+  grid.addEventListener('click', (e) => {
+    const wlBtn = e.target.closest('.product-wishlist');
+    if (!wlBtn) return;
+    e.stopPropagation();
+
+    const card      = wlBtn.closest('.product-card');
+    const productId = parseInt(card?.dataset.id);
+    if (!productId) return;
+
+    const wishlist = JSON.parse(localStorage.getItem('ceyloncart_wishlist') || '[]');
+    const inList   = wishlist.includes(productId);
+    const updated  = inList
+      ? wishlist.filter(id => id !== productId)
+      : [...wishlist, productId];
+
+    localStorage.setItem('ceyloncart_wishlist', JSON.stringify(updated));
+
+    const icon = wlBtn.querySelector('i');
+    const nowIn = updated.includes(productId);
+    if (icon) {
+      icon.className = nowIn ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
+      icon.style.color = nowIn ? '#ef4444' : '';
+    }
+
+    showToast(nowIn ? '❤️ Added to wishlist!' : 'Removed from wishlist');
+  });
+
+  // Restore saved wishlist state on card icons
+  restoreWishlistIcons();
+}

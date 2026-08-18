@@ -122,6 +122,63 @@
     </div>
   </section>
 
+  <!-- ========== PRODUCT DETAIL MODAL ========== -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalProductName">
+    <div class="modal-card" id="modalCard">
+      <button class="modal-close" id="modalClose" aria-label="Close modal">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <!-- Image side -->
+      <div class="modal-image-side">
+        <div class="modal-badge" id="modalBadge"></div>
+        <img src="" alt="" class="modal-img" id="modalImg" />
+        <div class="modal-thumbnails" id="modalThumbnails"></div>
+      </div>
+
+      <!-- Info side -->
+      <div class="modal-info-side">
+        <span class="modal-category-tag" id="modalCategoryTag"></span>
+        <h2 class="modal-product-name" id="modalProductName"></h2>
+
+        <div class="modal-rating" id="modalRating"></div>
+
+        <div class="modal-price-row">
+          <span class="modal-price-label">LKR</span>
+          <span class="modal-price-value" id="modalPrice"></span>
+        </div>
+
+        <p class="modal-desc" id="modalDesc"></p>
+
+        <div class="modal-highlights" id="modalHighlights"></div>
+
+        <div class="modal-qty-row">
+          <span class="modal-qty-label">Quantity</span>
+          <div class="modal-qty-control">
+            <button class="modal-qty-btn" id="modalQtyMinus" aria-label="Decrease quantity">−</button>
+            <span class="modal-qty-value" id="modalQtyValue">1</span>
+            <button class="modal-qty-btn" id="modalQtyPlus" aria-label="Increase quantity">+</button>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button class="modal-add-cart-btn" id="modalAddCart">
+            <i class="fa-solid fa-cart-plus"></i> Add to Cart
+          </button>
+          <button class="modal-wishlist-btn" id="modalWishlist" aria-label="Add to wishlist">
+            <i class="fa-regular fa-heart"></i>
+          </button>
+        </div>
+
+        <div class="modal-meta">
+          <span><i class="fa-solid fa-truck-fast"></i> Free delivery on orders over LKR 5,000</span>
+          <span><i class="fa-solid fa-rotate-left"></i> 30-day easy returns</span>
+          <span><i class="fa-solid fa-shield-halved"></i> 100% authentic guarantee</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ========== CART SIDEBAR ========== -->
   <div class="cart-overlay" id="cartOverlay"></div>
   <aside class="cart-sidebar" id="cartSidebar">
